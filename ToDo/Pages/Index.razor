@@ -1,0 +1,84 @@
+﻿@page "/"
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="todolist not-done">
+                <h1>Lista de Tarefas</h1>
+
+                <input @bind="NewTarefa" class="" placeholder="Tarefa" />
+
+                <button id="checkAll" class="btn btn-success" @onclick="AddNewTask">Adiciona</button>
+                <hr>
+                <ul id="sortable" class="list-unstyled">
+
+                    @foreach (var item in tarefas.Where(x => x.Feito == false))
+                    {
+                        <li>
+                            <label>
+                                <input @bind="item.Feito" type="checkbox" />
+                                @item.Tarefa
+
+                            </label>
+                        </li>
+
+                    }
+                </ul>
+
+                <div class="todo-footer">
+                    <strong><span class="count-todos"></span></strong> Tarefas
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="todolist">
+                <h1>Feitas</h1>
+                <ul id="done-items" class="list-unstyled">
+                    <li>
+                        <ul id="sortable" class="list-unstyled">
+
+
+                            @foreach (var item in tarefas.Where(x => x.Feito == true))
+                            {
+
+                                <li>
+                                    <label>
+                                        <input @bind="item.Feito" type="checkbox" />@item.Tarefa
+                                    </label>
+                                </li>
+
+                            }
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    public class ListaTarefa
+    {
+
+        public string Tarefa { get; set; }
+        public bool Feito { get; set; }
+    }
+
+    private string NewTarefa = "";
+
+    private List<ListaTarefa> tarefas = new List<ListaTarefa>();
+
+    void AddNewTask()
+    {
+        
+        
+        if (!string.IsNullOrWhiteSpace(NewTarefa))
+        {
+            tarefas.Add(new ListaTarefa { Tarefa = NewTarefa });
+            NewTarefa = "";
+        }
+    }
+
+}
